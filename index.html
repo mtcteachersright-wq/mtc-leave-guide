@@ -2491,11 +2491,25 @@
   .db-section-lbl { font-size:12px; color:var(--ink-muted); letter-spacing:0.08em; margin-bottom:10px; font-weight:500; text-transform:uppercase; }
   .db-empty { text-align:center; padding:2.5rem 1rem; color:var(--ink-muted); font-size:14px; }
   .db-loading { text-align:center; padding:1.5rem; color:var(--ink-muted); font-size:14px; }
-  .db-admin-log { background:#fff; border:1px solid var(--rule); border-radius:8px; padding:1rem 1.25rem; margin-bottom:1rem; }
-  .db-admin-log-title { font-size:13px; font-weight:500; color:var(--ink); margin-bottom:10px; }
-  .db-admin-log-row { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid var(--paper-dark); font-size:12px; color:var(--ink-muted); }
-  .db-admin-log-row:last-child { border-bottom:none; }
-  .db-admin-log-email { color:var(--blue); font-weight:500; }
+  .db-admin-log { background:#fff; border:1px solid var(--rule); border-radius:8px; padding:0; margin-bottom:1rem; overflow:hidden; }
+  .db-admin-log-header { display:flex; align-items:center; justify-content:space-between; padding:0.75rem 1.25rem; cursor:pointer; user-select:none; }
+  .db-admin-log-header:hover { background:var(--paper); }
+  .db-admin-log-title { font-size:13px; font-weight:500; color:var(--ink); }
+  .db-admin-log-arrow { font-size:11px; color:var(--ink-muted); transition:transform 0.2s; }
+  .db-admin-log.open .db-admin-log-arrow { transform:rotate(180deg); }
+  .db-admin-log-body { display:none; border-top:1px solid var(--rule); padding:0.75rem 1.25rem; }
+  .db-admin-log.open .db-admin-log-body { display:block; }
+  .db-admin-log-user { margin-bottom:10px; }
+  .db-admin-log-user:last-child { margin-bottom:0; }
+  .db-admin-log-user-header { display:flex; align-items:center; gap:8px; padding:5px 0; cursor:pointer; }
+  .db-admin-log-user-header:hover { opacity:0.8; }
+  .db-admin-log-email { color:var(--blue); font-weight:500; font-size:12px; }
+  .db-admin-log-count { font-size:11px; color:var(--ink-muted); background:var(--paper-dark); padding:1px 7px; border-radius:20px; }
+  .db-admin-log-times { display:none; padding:4px 0 4px 1rem; }
+  .db-admin-log-user.open .db-admin-log-times { display:block; }
+  .db-admin-log-time { font-size:11px; color:var(--ink-muted); padding:2px 0; }
+  .db-board-inner { max-width:680px; margin:0 auto; }
+  #tab-discuss { background: var(--paper-darker); min-height: 60vh; padding: 1.5rem; margin: -2rem -1.5rem -4rem; }
   .db-nick-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center; }
   .db-nick-modal.show { display:flex; }
   .db-nick-box { background:#fff; border-radius:8px; padding:2rem; width:340px; max-width:90vw; }
@@ -2522,6 +2536,7 @@
 
 <!-- 已登入 -->
 <div id="db-board-section" style="display:none;">
+  <div class="db-board-inner">
   <div class="db-userbar">
     <div class="db-avatar" id="db-avatar"></div>
     <div style="flex:1;">
@@ -2531,11 +2546,16 @@
     <button class="db-btn-sm" onclick="dbSignOut()">登出</button>
   </div>
 
-  <!-- 管理者登入紀錄 -->
+  <!-- 管理者登入紀錄（收合式） -->
   <div id="db-admin-log-section" style="display:none;">
-    <div class="db-admin-log">
-      <div class="db-admin-log-title">👤 近期登入紀錄（僅管理者可見）</div>
-      <div id="db-admin-log-list"><div class="db-loading">載入中...</div></div>
+    <div class="db-admin-log" id="db-admin-log-box">
+      <div class="db-admin-log-header" onclick="document.getElementById('db-admin-log-box').classList.toggle('open')">
+        <span class="db-admin-log-title">👤 來訪紀錄（僅管理者可見）</span>
+        <span class="db-admin-log-arrow">▼</span>
+      </div>
+      <div class="db-admin-log-body">
+        <div id="db-admin-log-list"><div class="db-loading">載入中...</div></div>
+      </div>
     </div>
   </div>
 
@@ -2558,6 +2578,7 @@
 
   <div id="db-loading" class="db-loading">載入中...</div>
   <div class="db-threads" id="db-threads"></div>
+  </div><!-- end db-board-inner -->
 </div>
 
 <!-- 暱稱 Modal -->
@@ -2869,18 +2890,29 @@ onAuthStateChanged(auth, async user => {
 });
 
 function loadLoginLog() {
-  const q = query(collection(db,'logins'), orderBy('loginAt','desc'), limit(30));
+  const q = query(collection(db,'logins'), orderBy('loginAt','desc'), limit(100));
   onSnapshot(q, snap => {
     const el = document.getElementById('db-admin-log-list');
-    if (snap.empty) { el.innerHTML='<div style="font-size:12px;color:var(--ink-muted);">尚無登入紀錄</div>'; return; }
-    el.innerHTML = snap.docs.map(d => {
+    if (snap.empty) { el.innerHTML='<div style="font-size:12px;color:var(--ink-muted);">尚無來訪紀錄</div>'; return; }
+    // 依 email 分組
+    const grouped = {};
+    snap.docs.forEach(d => {
       const r = d.data();
-      return `<div class="db-admin-log-row">
-        <span class="db-admin-log-email">${esc(r.email)}</span>
-        <span>${esc(r.displayName)}</span>
-        <span style="margin-left:auto;">${fmtT(r.loginAt)}</span>
-      </div>`;
-    }).join('');
+      if (!grouped[r.email]) grouped[r.email] = { email:r.email, displayName:r.displayName, times:[] };
+      grouped[r.email].times.push(r.loginAt);
+    });
+    el.innerHTML = Object.values(grouped).map((u, i) => `
+      <div class="db-admin-log-user" id="loguser-${i}">
+        <div class="db-admin-log-user-header" onclick="document.getElementById('loguser-${i}').classList.toggle('open')">
+          <span class="db-admin-log-email">${esc(u.email)}</span>
+          ${u.displayName ? `<span style="font-size:12px;color:var(--ink-muted);">${esc(u.displayName)}</span>` : ''}
+          <span class="db-admin-log-count">${u.times.length} 次</span>
+          <span style="font-size:10px;color:var(--ink-muted);margin-left:auto;">▼</span>
+        </div>
+        <div class="db-admin-log-times">
+          ${u.times.map(t => `<div class="db-admin-log-time">🕐 ${fmtT(t)}</div>`).join('')}
+        </div>
+      </div>`).join('<hr style="border:none;border-top:1px solid var(--paper-dark);margin:6px 0;">');
   });
 }
 

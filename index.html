@@ -2944,10 +2944,8 @@
       <div style="font-size:13px;font-weight:500;color:#92610a;margin-bottom:4px;">🔒 關於帳號隱私</div>
       <div style="font-size:12px;color:#78580a;line-height:1.6;">登入 Google 帳號是為了確認您是真實使用者，防止惡意機器人騷擾。您的帳號資訊<strong>不會公開顯示</strong>，留言時只會呈現您自行設定的暱稱。</div>
     </div>
-    <button class="db-btn-google" onclick="dbSignIn()">
-      <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      以 Google 帳號登入
-    </button>
+    <div id="db-gsi-btn" style="display:flex;justify-content:center;margin-bottom:0.5rem;min-height:44px;"></div>
+    <p style="font-size:11px;color:var(--ink-muted);text-align:center;margin-top:4px;">若按鈕未顯示，請重新整理頁面</p>
     <div class="webview-hint">⚠️ 點擊後會跳轉到 Google 登入頁面，登入後自動返回。<br>請勿從 LINE 或其他 App 內建瀏覽器直接開啟。</div>
   </div>
 </div>
@@ -3185,6 +3183,7 @@ window.addEventListener('beforeprint', () => {
 });
 </script>
 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, query, orderBy, limit, serverTimestamp, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -3266,22 +3265,37 @@ if (saved) {
   try { onSignedIn(JSON.parse(saved)); } catch(e) { localStorage.removeItem('gis_user'); }
 }
 
-// 處理 OAuth redirect 回來的 token（URL hash）
-(function handleOAuthCallback() {
-  const hash = window.location.hash;
-  if (!hash.includes('access_token')) return;
-  const params = new URLSearchParams(hash.replace('#', ''));
-  const accessToken = params.get('access_token');
-  if (!accessToken) return;
-  // 清除 URL hash
-  history.replaceState(null, '', window.location.pathname + '#tab-discuss');
-  // 用 access token 取得使用者資訊
-  fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-    headers: { Authorization: 'Bearer ' + accessToken }
-  }).then(r => r.json()).then(user => {
-    onSignedIn(user);
-  }).catch(() => dbToast('登入失敗，請再試一次'));
-})();
+// 初始化 GIS 並渲染登入按鈕
+function initGIS() {
+  if (!window.google || !window.google.accounts) {
+    setTimeout(initGIS, 200);
+    return;
+  }
+  google.accounts.id.initialize({
+    client_id: CLIENT_ID,
+    callback: async (response) => {
+      // 解碼 JWT
+      const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+      await onSignedIn(payload);
+    },
+    auto_select: false,
+    cancel_on_tap_outside: false,
+    ux_mode: 'popup'
+  });
+  // 渲染標準 Google 登入按鈕（不是我們自製的彈窗）
+  const btn = document.getElementById('db-gsi-btn');
+  if (btn) {
+    google.accounts.id.renderButton(btn, {
+      type: 'standard',
+      theme: 'outline',
+      size: 'large',
+      text: 'signin_with',
+      locale: 'zh-TW',
+      width: 280
+    });
+  }
+}
+initGIS();
 
 function loadLoginLog() {
   const q = query(collection(db,'logins'), orderBy('loginAt','desc'), limit(100));
@@ -3416,17 +3430,14 @@ function buildReply(pid,rid,r) {
 }
 
 window.dbSignIn = () => {
-  const redirectUri = encodeURIComponent(window.location.origin + window.location.pathname + '#tab-discuss');
-  const params = [
-    'client_id=' + CLIENT_ID,
-    'redirect_uri=' + redirectUri,
-    'response_type=token',
-    'scope=openid email profile',
-    'prompt=select_account'
-  ].join('&');
-  window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?' + params;
+  // GIS renderButton 已直接渲染按鈕，這個函式保留備用
+  const btn = document.getElementById('db-gsi-btn');
+  if (btn) btn.querySelector('div[role=button]')?.click();
 };
 window.dbSignOut = () => {
+  if (window.google && window.google.accounts) {
+    google.accounts.id.disableAutoSelect();
+  }
   localStorage.removeItem('gis_user');
   onSignedOut();
   dbToast('已登出');

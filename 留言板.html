@@ -7,362 +7,79 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #f7f5f0;
-    --surface: #ffffff;
-    --border: #e2ddd6;
-    --text: #1a1814;
-    --muted: #7a7269;
-    --accent: #8b4513;
-    --accent-light: #f5ede6;
-    --admin-bg: #eef4ee;
-    --admin-text: #2d5a2d;
-    --radius: 12px;
-    --radius-sm: 8px;
+    --bg: #f7f5f0; --surface: #ffffff; --border: #e2ddd6;
+    --text: #1a1814; --muted: #7a7269; --accent: #8b4513; --accent-light: #f5ede6;
+    --admin-bg: #eef4ee; --admin-text: #2d5a2d;
+    --pin-bg: #fffbeb; --pin-border: #f5d87a;
+    --feat-bg: #f0f6ff; --feat-border: #b8d0f0;
+    --radius: 12px; --radius-sm: 8px;
   }
-
-  body {
-    font-family: 'Noto Sans TC', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 0;
-  }
-
-  header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 1.25rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .site-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: 0.02em;
-  }
-
-  .site-subtitle {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
-  #user-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .avatar {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: var(--accent-light);
-    color: var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 500;
-    flex-shrink: 0;
-    overflow: hidden;
-  }
-
+  body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .site-title { font-family: 'Noto Serif TC', serif; font-size: 18px; font-weight: 600; }
+  .site-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  #user-bar { display: flex; align-items: center; gap: 10px; }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; flex-shrink: 0; overflow: hidden; }
   .avatar img { width: 100%; height: 100%; object-fit: cover; }
-
   .user-name { font-size: 14px; font-weight: 500; }
   .user-role { font-size: 11px; color: var(--muted); }
-
-  .btn {
-    font-family: 'Noto Sans TC', sans-serif;
-    font-size: 13px;
-    padding: 7px 16px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text);
-    cursor: pointer;
-    transition: background 0.15s;
-  }
+  .btn { font-family: 'Noto Sans TC', sans-serif; font-size: 13px; padding: 7px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; transition: background 0.15s; }
   .btn:hover { background: var(--bg); }
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-  }
-  .btn-primary:hover { background: #6f3510; border-color: #6f3510; }
-
-  .btn-google {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    padding: 10px 22px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    cursor: pointer;
-    font-family: 'Noto Sans TC', sans-serif;
-    transition: background 0.15s, box-shadow 0.15s;
-  }
-  .btn-google:hover { background: var(--bg); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-
-  main {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem 4rem;
-  }
-
-  #login-section {
-    margin: 3rem auto;
-    max-width: 400px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 2rem;
-    text-align: center;
-  }
-
-  .login-icon {
-    width: 52px;
-    height: 52px;
-    background: var(--accent-light);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-    font-size: 22px;
-  }
-
-  .login-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-
-  .login-desc {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-  }
-
-  #compose-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
-  }
-
-  textarea {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-    font-size: 14px;
-    font-family: 'Noto Sans TC', sans-serif;
-    color: var(--text);
-    background: var(--bg);
-    resize: none;
-    min-height: 90px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #6f3510; }
+  .btn-google { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; padding: 10px 22px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-family: 'Noto Sans TC', sans-serif; }
+  .btn-google:hover { background: var(--bg); }
+  main { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  #login-section { margin: 3rem auto; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; text-align: center; }
+  .login-icon { width: 52px; height: 52px; background: var(--accent-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 22px; }
+  .login-title { font-family: 'Noto Serif TC', serif; font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+  .login-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  #compose-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; }
+  textarea { width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 14px; font-family: 'Noto Sans TC', sans-serif; color: var(--text); background: var(--bg); resize: none; min-height: 90px; outline: none; transition: border-color 0.15s; }
   textarea:focus { border-color: var(--accent); }
-
-  .compose-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-    gap: 8px;
-  }
-
+  .compose-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; gap: 8px; }
   .compose-hint { font-size: 12px; color: var(--muted); }
-
   .threads { display: flex; flex-direction: column; gap: 1rem; }
-
-  .post-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-  }
-
-  .post-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
+  .post-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+  .post-card.pinned { background: var(--pin-bg); border-color: var(--pin-border); }
+  .post-card.featured { background: var(--feat-bg); border-color: var(--feat-border); }
+  .post-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
   .post-meta { flex: 1; }
   .post-nick { font-size: 14px; font-weight: 500; }
   .post-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .post-body { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 12px; }
-
-  .post-actions { display: flex; gap: 6px; flex-wrap: wrap; }
-
-  .btn-sm {
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    font-family: 'Noto Sans TC', sans-serif;
-    transition: background 0.1s;
-  }
+  .post-body { font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
+  .post-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .btn-sm { font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; font-family: 'Noto Sans TC', sans-serif; transition: background 0.1s; }
   .btn-sm:hover { background: var(--bg); color: var(--text); }
   .btn-sm-danger { color: #b91c1c; }
   .btn-sm-danger:hover { background: #fef2f2; border-color: #fca5a5; }
-
-  .admin-badge {
-    font-size: 10px;
-    background: var(--admin-bg);
-    color: var(--admin-text);
-    padding: 2px 7px;
-    border-radius: 20px;
-    font-weight: 500;
-    margin-left: 6px;
-    vertical-align: middle;
-  }
-
-  .replies {
-    margin-top: 10px;
-    margin-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .reply-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-  }
-
-  .reply-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 6px;
-  }
-
-  .reply-body { font-size: 13px; line-height: 1.6; color: var(--text); }
-
-  .reply-compose {
-    margin-top: 10px;
-    margin-left: 2rem;
-    display: flex;
-    gap: 8px;
-  }
-
-  .reply-compose textarea {
-    flex: 1;
-    min-height: 60px;
-    font-size: 13px;
-  }
-
-  .reply-compose-btns {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    justify-content: flex-end;
-  }
-
-  .section-label {
-    font-size: 12px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 12px;
-    font-weight: 500;
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--muted);
-    font-size: 14px;
-  }
-
+  .btn-sm-on { background: var(--pin-bg); border-color: var(--pin-border); color: #92610a; }
+  .btn-sm-feat-on { background: var(--feat-bg); border-color: var(--feat-border); color: #1a4a8a; }
+  .admin-badge { font-size: 10px; background: var(--admin-bg); color: var(--admin-text); padding: 2px 7px; border-radius: 20px; font-weight: 500; margin-left: 5px; }
+  .pin-badge { font-size: 10px; background: var(--pin-bg); color: #92610a; border: 1px solid var(--pin-border); padding: 2px 7px; border-radius: 20px; font-weight: 500; margin-left: 5px; }
+  .feat-badge { font-size: 10px; background: var(--feat-bg); color: #1a4a8a; border: 1px solid var(--feat-border); padding: 2px 7px; border-radius: 20px; font-weight: 500; margin-left: 5px; }
+  .replies { margin-top: 10px; margin-left: 2rem; display: flex; flex-direction: column; gap: 8px; }
+  .reply-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; }
+  .reply-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .reply-body { font-size: 13px; line-height: 1.6; }
+  .reply-compose { margin-top: 10px; margin-left: 2rem; display: flex; gap: 8px; }
+  .reply-compose textarea { flex: 1; min-height: 60px; font-size: 13px; }
+  .reply-compose-btns { display: flex; flex-direction: column; gap: 6px; justify-content: flex-end; }
+  .section-divider { font-size: 12px; color: var(--muted); letter-spacing: 0.06em; margin: 1.5rem 0 12px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+  .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .section-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; font-weight: 500; }
+  .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 14px; }
   .loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 14px; }
-
-  #nickname-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 999;
-    align-items: center;
-    justify-content: center;
-  }
+  #nickname-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 999; align-items: center; justify-content: center; }
   #nickname-modal.show { display: flex; }
-
-  .modal-box {
-    background: var(--surface);
-    border-radius: var(--radius);
-    padding: 2rem;
-    width: 340px;
-    max-width: 90vw;
-  }
-
-  .modal-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-
+  .modal-box { background: var(--surface); border-radius: var(--radius); padding: 2rem; width: 340px; max-width: 90vw; }
+  .modal-title { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 600; margin-bottom: 8px; }
   .modal-desc { font-size: 13px; color: var(--muted); margin-bottom: 1rem; line-height: 1.6; }
-
-  .modal-input {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 9px 12px;
-    font-size: 14px;
-    font-family: 'Noto Sans TC', sans-serif;
-    color: var(--text);
-    background: var(--bg);
-    outline: none;
-    margin-bottom: 1rem;
-  }
+  .modal-input { width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 14px; font-family: 'Noto Sans TC', sans-serif; color: var(--text); background: var(--bg); outline: none; margin-bottom: 1rem; }
   .modal-input:focus { border-color: var(--accent); }
-
-  .modal-footer { display: flex; justify-content: flex-end; gap: 8px; }
-
-  #toast {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--text);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 13px;
-    opacity: 0;
-    transition: opacity 0.2s, transform 0.2s;
-    pointer-events: none;
-    z-index: 9999;
-  }
+  .modal-footer { display: flex; justify-content: flex-end; }
+  #toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text); color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 13px; opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none; z-index: 9999; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -412,13 +129,18 @@
       </div>
     </div>
 
-    <div class="section-label">最新討論</div>
+    <div id="featured-section" style="display:none;">
+      <div class="section-divider">⭐ 精選留言</div>
+      <div class="threads" id="featured-threads"></div>
+      <div class="section-divider" style="margin-top:1.5rem;">💬 所有討論</div>
+    </div>
+
+    <div class="section-label" id="new-label">最新討論</div>
     <div id="loading" class="loading">載入中...</div>
     <div class="threads" id="threads"></div>
   </div>
 </main>
 
-<!-- 暱稱設定 Modal -->
 <div id="nickname-modal">
   <div class="modal-box">
     <div class="modal-title">設定您的暱稱</div>
@@ -432,271 +154,270 @@
 
 <div id="toast"></div>
 
-<!-- Firebase -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as fbSignOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut as fbSignOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, query, orderBy, serverTimestamp, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-  // ★ 你的 Firebase 設定
   const firebaseConfig = {
     apiKey: "AIzaSyBk3On7USSfw-MrQtv1CIA_IplDL19LBBU",
     authDomain: "mtctechers-rights.firebaseapp.com",
     projectId: "mtctechers-rights",
     storageBucket: "mtctechers-rights.firebasestorage.app",
     messagingSenderId: "206354495513",
-    appId: "1:206354495513:web:6955555c004b879dc01288",
-    measurementId: "G-WFG0GRFV6B"
+    appId: "1:206354495513:web:6955555c004b879dc01288"
   };
 
   const ADMIN_EMAIL = 'mtc.teachers.right@gmail.com';
-
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  getRedirectResult(auth).catch(() => {});
+
   let currentUser = null;
-  let unsubscribe = null;
+  let unsubPosts = null;
+  const replyUnsubs = {};
 
-  function isAdmin(user) {
-    return user && user.email === ADMIN_EMAIL;
-  }
+  const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  const isAdmin = u => u && u.email === ADMIN_EMAIL;
+  const getNick = uid => localStorage.getItem('nick_'+uid)||null;
+  const setNick = (uid,n) => localStorage.setItem('nick_'+uid,n);
+  const initials = n => n?n.slice(0,2):'匿';
+  const fmtTime = ts => { if(!ts) return ''; const d=ts.toDate?ts.toDate():new Date(ts); return d.toLocaleDateString('zh-TW',{month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}); };
 
-  function getNickname(uid) {
-    return localStorage.getItem('nick_' + uid) || null;
-  }
-
-  function setNickname(uid, nick) {
-    localStorage.setItem('nick_' + uid, nick);
-  }
-
-  function showToast(msg) {
+  function toast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  function formatTime(ts) {
-    if (!ts) return '';
-    const d = ts.toDate ? ts.toDate() : new Date(ts);
-    return d.toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-  }
-
-  function getInitials(name) {
-    return name ? name.slice(0, 2) : '匿';
-  }
-
-  window.signInWithGoogle = async function() {
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (e) {
-      showToast('登入失敗，請再試一次');
-    }
+  window.signInWithGoogle = async () => {
+    try { await signInWithRedirect(auth, new GoogleAuthProvider()); }
+    catch { toast('登入失敗，請再試一次'); }
   };
 
-  window.signOut = async function() {
-    if (unsubscribe) unsubscribe();
+  window.signOut = async () => {
+    if (unsubPosts) unsubPosts();
+    Object.values(replyUnsubs).forEach(u => u());
     await fbSignOut(auth);
   };
 
-  window.saveNickname = function() {
-    const input = document.getElementById('nickname-input').value.trim();
-    if (!input) { showToast('請輸入暱稱'); return; }
-    setNickname(currentUser.uid, input);
+  window.saveNickname = () => {
+    const v = document.getElementById('nickname-input').value.trim();
+    if (!v) { toast('請輸入暱稱'); return; }
+    setNick(currentUser.uid, v);
     document.getElementById('nickname-modal').classList.remove('show');
-    document.getElementById('compose-nick-display').textContent = input;
-    showToast('暱稱設定完成！');
+    document.getElementById('compose-nick-display').textContent = v;
+    toast('暱稱設定完成！');
   };
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, user => {
     document.getElementById('auth-loading').style.display = 'none';
     currentUser = user;
-
     if (user) {
-      const nick = getNickname(user.uid) || (isAdmin(user) ? '管理者' : '');
+      const nick = getNick(user.uid)||(isAdmin(user)?'管理者':'');
       document.getElementById('auth-logged-in').style.display = 'flex';
       document.getElementById('auth-logged-out').style.display = 'none';
       document.getElementById('login-section').style.display = 'none';
       document.getElementById('board-section').style.display = 'block';
-
-      const avatarEl = document.getElementById('header-avatar');
-      if (user.photoURL) {
-        avatarEl.innerHTML = `<img src="${user.photoURL}" alt="">`;
-      } else {
-        avatarEl.textContent = getInitials(nick || user.displayName || '');
-      }
-      document.getElementById('header-name').textContent = nick || user.displayName || '';
-      document.getElementById('header-role').textContent = isAdmin(user) ? '管理者' : '一般使用者';
-      document.getElementById('compose-nick-display').textContent = nick || user.displayName || '';
-
+      const av = document.getElementById('header-avatar');
+      if (user.photoURL) av.innerHTML = `<img src="${user.photoURL}" alt="">`;
+      else av.textContent = initials(nick||user.displayName||'');
+      document.getElementById('header-name').textContent = nick||user.displayName||'';
+      document.getElementById('header-role').textContent = isAdmin(user)?'管理者':'一般使用者';
+      document.getElementById('compose-nick-display').textContent = nick||user.displayName||'';
       if (!nick && !isAdmin(user)) {
         setTimeout(() => {
-          document.getElementById('nickname-input').value = user.displayName || '';
+          document.getElementById('nickname-input').value = user.displayName||'';
           document.getElementById('nickname-modal').classList.add('show');
         }, 500);
       }
-
       loadPosts();
     } else {
       document.getElementById('auth-logged-in').style.display = 'none';
       document.getElementById('auth-logged-out').style.display = 'flex';
       document.getElementById('login-section').style.display = 'block';
       document.getElementById('board-section').style.display = 'none';
-      document.getElementById('threads').innerHTML = '';
     }
   });
 
   function loadPosts() {
-    const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
-    if (unsubscribe) unsubscribe();
-    unsubscribe = onSnapshot(q, async (snapshot) => {
+    if (unsubPosts) unsubPosts();
+    const q = query(collection(db,'posts'), orderBy('createdAt','desc'));
+    unsubPosts = onSnapshot(q, snap => {
       document.getElementById('loading').style.display = 'none';
-      const threadsEl = document.getElementById('threads');
-      threadsEl.innerHTML = '';
+      const tEl = document.getElementById('threads');
+      const fEl = document.getElementById('featured-threads');
+      const fSec = document.getElementById('featured-section');
+      const newLbl = document.getElementById('new-label');
 
-      if (snapshot.empty) {
-        threadsEl.innerHTML = '<div class="empty-state">還沒有留言，成為第一個留言的人吧！</div>';
-        return;
-      }
+      const allIds = new Set(snap.docs.map(d => d.id));
 
-      for (const postDoc of snapshot.docs) {
+      [...tEl.querySelectorAll('.post-card')].forEach(el => {
+        const id = el.dataset.postid;
+        if (!allIds.has(id)) el.remove();
+      });
+      [...fEl.querySelectorAll('.post-card')].forEach(el => {
+        const id = el.dataset.postid;
+        if (!allIds.has(id)) el.remove();
+      });
+
+      const pinned = snap.docs.filter(d => d.data().pinned);
+      const normal = snap.docs.filter(d => !d.data().pinned);
+      const ordered = [...pinned, ...normal];
+      let hasFeatured = false;
+
+      ordered.forEach(postDoc => {
         const post = postDoc.data();
-        const repliesSnap = await getDocs(query(collection(db, 'posts', postDoc.id, 'replies'), orderBy('createdAt', 'asc')));
-        const replies = repliesSnap.docs.map(r => ({ id: r.id, ...r.data() }));
-        threadsEl.appendChild(renderPost(postDoc.id, post, replies));
-      }
+        if (post.featured) { hasFeatured = true; upsertCard(fEl, postDoc.id, post, true); }
+        else { [...fEl.querySelectorAll(`[data-postid="${postDoc.id}"]`)].forEach(e=>e.remove()); }
+        upsertCard(tEl, postDoc.id, post, false);
+      });
+
+      tEl.querySelectorAll('.post-card').forEach(el => {
+        const id = el.dataset.postid;
+        const d = snap.docs.find(d=>d.id===id);
+        if (!d) return;
+        if (d.data().pinned && el !== tEl.firstElementChild) tEl.prepend(el);
+      });
+
+      fSec.style.display = hasFeatured ? 'block' : 'none';
+      newLbl.style.display = hasFeatured ? 'none' : 'block';
+
+      if (tEl.children.length === 0)
+        tEl.innerHTML = '<div class="empty-state">還沒有留言，成為第一個留言的人吧！</div>';
     });
   }
 
-  function renderPost(postId, post, replies) {
-    const div = document.createElement('div');
-    div.className = 'post-card';
-    div.id = 'post-' + postId;
-
-    const nick = post.nick || '匿名';
-    const isAdminPost = post.isAdmin;
-    const canDelete = currentUser && (isAdmin(currentUser) || currentUser.uid === post.uid);
-
-    let repliesHTML = '';
-    for (const r of replies) {
-      const rNick = r.nick || '匿名';
-      const rAdmin = r.isAdmin;
-      const rCanDelete = currentUser && isAdmin(currentUser);
-      repliesHTML += `
-        <div class="reply-card" id="reply-${postId}-${r.id}">
-          <div class="reply-header">
-            <div class="avatar" style="width:26px;height:26px;font-size:11px;background:${rAdmin ? 'var(--admin-bg)' : 'var(--accent-light)'};color:${rAdmin ? 'var(--admin-text)' : 'var(--accent)'};">${getInitials(rNick)}</div>
-            <span style="font-size:13px;font-weight:500;">${rNick}${rAdmin ? '<span class="admin-badge">管理者</span>' : ''}</span>
-            <span style="font-size:11px;color:var(--muted);margin-left:auto;">${formatTime(r.createdAt)}</span>
-            ${rCanDelete ? `<button class="btn-sm btn-sm-danger" onclick="deleteReply('${postId}','${r.id}')">刪除</button>` : ''}
-          </div>
-          <div class="reply-body">${escHtml(r.body)}</div>
-        </div>`;
+  function upsertCard(container, postId, post, isFeat) {
+    let el = container.querySelector(`[data-postid="${postId}"]`);
+    if (!el) {
+      el = document.createElement('div');
+      el.dataset.postid = postId;
+      container.appendChild(el);
+      subscribeReplies(postId);
     }
-
-    const adminReplyBtn = currentUser && isAdmin(currentUser)
-      ? `<button class="btn-sm" onclick="toggleReply('${postId}')">回覆</button>` : '';
-    const userReplyBtn = currentUser && !isAdmin(currentUser)
-      ? `<button class="btn-sm" onclick="toggleReply('${postId}')">回覆</button>` : '';
-
-    div.innerHTML = `
+    el.className = 'post-card' + (post.pinned?' pinned':'') + (post.featured?' featured':'');
+    el.id = (isFeat?'feat-':'post-') + postId;
+    const nick = post.nick||'匿名';
+    const adminPost = post.isAdmin;
+    const canDel = currentUser && (isAdmin(currentUser)||currentUser.uid===post.uid);
+    const adminBtns = isAdmin(currentUser) ? `
+      <button class="btn-sm ${post.pinned?'btn-sm-on':''}" onclick="togglePin('${postId}')">📌 ${post.pinned?'取消置頂':'置頂'}</button>
+      <button class="btn-sm ${post.featured?'btn-sm-feat-on':''}" onclick="toggleFeat('${postId}')">⭐ ${post.featured?'取消精選':'精選'}</button>` : '';
+    const replyPrefix = isFeat ? 'f' : '';
+    el.innerHTML = `
       <div class="post-header">
-        <div class="avatar" style="background:${isAdminPost ? 'var(--admin-bg)' : 'var(--accent-light)'};color:${isAdminPost ? 'var(--admin-text)' : 'var(--accent)'};">${getInitials(nick)}</div>
+        <div class="avatar" style="background:${adminPost?'var(--admin-bg)':'var(--accent-light)'};color:${adminPost?'var(--admin-text)':'var(--accent)'};">${initials(nick)}</div>
         <div class="post-meta">
-          <div class="post-nick">${escHtml(nick)}${isAdminPost ? '<span class="admin-badge">管理者</span>' : ''}</div>
-          <div class="post-time">${formatTime(post.createdAt)}</div>
+          <div class="post-nick">${esc(nick)}${adminPost?'<span class="admin-badge">管理者</span>':''}${post.pinned?'<span class="pin-badge">📌 置頂</span>':''}${post.featured?'<span class="feat-badge">⭐ 精選</span>':''}</div>
+          <div class="post-time">${fmtTime(post.createdAt)}</div>
         </div>
       </div>
-      <div class="post-body">${escHtml(post.body)}</div>
+      <div class="post-body">${esc(post.body)}</div>
       <div class="post-actions">
-        ${adminReplyBtn}${userReplyBtn}
-        ${canDelete ? `<button class="btn-sm btn-sm-danger" onclick="deletePost('${postId}')">刪除</button>` : ''}
-        ${isAdmin(currentUser) && post.email ? `<span style="font-size:11px;color:var(--muted);margin-left:4px;">✉ ${escHtml(post.email)}</span>` : ''}
+        <button class="btn-sm" onclick="toggleReply('${replyPrefix}rc-${postId}')">回覆</button>
+        ${canDel?`<button class="btn-sm btn-sm-danger" onclick="delPost('${postId}')">刪除</button>`:''}
+        ${adminBtns}
+        ${isAdmin(currentUser)&&post.email?`<span style="font-size:11px;color:var(--muted);margin-left:4px;">✉ ${esc(post.email)}</span>`:''}
       </div>
-      <div class="replies" id="replies-${postId}">${repliesHTML}</div>
-      <div class="reply-compose" id="reply-compose-${postId}" style="display:none;">
-        <textarea id="reply-input-${postId}" placeholder="輸入回覆..."></textarea>
+      <div class="replies" id="${replyPrefix}replies-${postId}"></div>
+      <div class="reply-compose" id="${replyPrefix}rc-${postId}" style="display:none;">
+        <textarea id="${replyPrefix}ri-${postId}" placeholder="輸入回覆..."></textarea>
         <div class="reply-compose-btns">
-          <button class="btn btn-primary" style="font-size:12px;padding:6px 12px;" onclick="submitReply('${postId}')">送出</button>
-          <button class="btn" style="font-size:12px;padding:6px 12px;" onclick="toggleReply('${postId}')">取消</button>
+          <button class="btn btn-primary" style="font-size:12px;padding:6px 12px;" onclick="submitReply('${postId}','${replyPrefix}')">送出</button>
+          <button class="btn" style="font-size:12px;padding:6px 12px;" onclick="toggleReply('${replyPrefix}rc-${postId}')">取消</button>
         </div>
       </div>`;
+  }
+
+  function subscribeReplies(postId) {
+    if (replyUnsubs[postId]) return;
+    const q = query(collection(db,'posts',postId,'replies'), orderBy('createdAt','asc'));
+    replyUnsubs[postId] = onSnapshot(q, snap => {
+      ['replies-'+postId, 'freplies-'+postId].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = '';
+        snap.docs.forEach(r => el.appendChild(buildReply(postId, r.id, r.data())));
+      });
+    });
+  }
+
+  function buildReply(postId, replyId, r) {
+    const div = document.createElement('div');
+    div.className = 'reply-card';
+    const rNick = r.nick||'匿名';
+    div.innerHTML = `
+      <div class="reply-header">
+        <div class="avatar" style="width:26px;height:26px;font-size:11px;background:${r.isAdmin?'var(--admin-bg)':'var(--accent-light)'};color:${r.isAdmin?'var(--admin-text)':'var(--accent)'};">${initials(rNick)}</div>
+        <span style="font-size:13px;font-weight:500;">${esc(rNick)}${r.isAdmin?'<span class="admin-badge">管理者</span>':''}</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:auto;">${fmtTime(r.createdAt)}</span>
+        ${isAdmin(currentUser)?`<button class="btn-sm btn-sm-danger" onclick="delReply('${postId}','${replyId}')">刪除</button>`:''}
+      </div>
+      <div class="reply-body">${esc(r.body)}</div>`;
     return div;
   }
 
-  function escHtml(str) {
-    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-  }
-
-  window.toggleReply = function(postId) {
-    const el = document.getElementById('reply-compose-' + postId);
-    el.style.display = el.style.display === 'none' ? 'flex' : 'none';
-    if (el.style.display === 'flex') document.getElementById('reply-input-' + postId).focus();
+  window.toggleReply = id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const open = el.style.display !== 'none';
+    el.style.display = open ? 'none' : 'flex';
+    if (!open) { const inp = el.querySelector('textarea'); if(inp) inp.focus(); }
   };
 
-  window.submitPost = async function() {
-    if (!currentUser) { showToast('請先登入'); return; }
+  window.submitPost = async () => {
+    if (!currentUser) { toast('請先登入'); return; }
     const body = document.getElementById('compose-input').value.trim();
-    if (!body) { showToast('請輸入內容'); return; }
-    const nick = getNickname(currentUser.uid) || (isAdmin(currentUser) ? '管理者' : currentUser.displayName || '匿名');
+    if (!body) { toast('請輸入內容'); return; }
+    const nick = getNick(currentUser.uid)||(isAdmin(currentUser)?'管理者':currentUser.displayName||'匿名');
     try {
-      await addDoc(collection(db, 'posts'), {
-        uid: currentUser.uid,
-        email: currentUser.email,
-        nick,
-        body,
-        isAdmin: isAdmin(currentUser),
-        createdAt: serverTimestamp()
-      });
+      await addDoc(collection(db,'posts'), { uid:currentUser.uid, email:currentUser.email, nick, body, isAdmin:isAdmin(currentUser), pinned:false, featured:false, createdAt:serverTimestamp() });
       document.getElementById('compose-input').value = '';
-      showToast('留言已發佈！');
-    } catch (e) {
-      showToast('發佈失敗：' + e.message);
-    }
+      toast('留言已發佈！');
+    } catch(e) { toast('發佈失敗：'+e.message); }
   };
 
-  window.submitReply = async function(postId) {
+  window.submitReply = async (postId, prefix='') => {
     if (!currentUser) return;
-    const body = document.getElementById('reply-input-' + postId).value.trim();
-    if (!body) { showToast('請輸入回覆內容'); return; }
-    const nick = getNickname(currentUser.uid) || (isAdmin(currentUser) ? '管理者' : currentUser.displayName || '匿名');
+    const inp = document.getElementById(prefix+'ri-'+postId);
+    const body = inp?.value.trim();
+    if (!body) { toast('請輸入回覆內容'); return; }
+    const nick = getNick(currentUser.uid)||(isAdmin(currentUser)?'管理者':currentUser.displayName||'匿名');
     try {
-      await addDoc(collection(db, 'posts', postId, 'replies'), {
-        uid: currentUser.uid,
-        email: currentUser.email,
-        nick,
-        body,
-        isAdmin: isAdmin(currentUser),
-        createdAt: serverTimestamp()
-      });
-      document.getElementById('reply-input-' + postId).value = '';
-      document.getElementById('reply-compose-' + postId).style.display = 'none';
-      showToast('回覆已送出！');
-    } catch (e) {
-      showToast('回覆失敗：' + e.message);
-    }
+      await addDoc(collection(db,'posts',postId,'replies'), { uid:currentUser.uid, email:currentUser.email, nick, body, isAdmin:isAdmin(currentUser), createdAt:serverTimestamp() });
+      inp.value = '';
+      document.getElementById(prefix+'rc-'+postId).style.display = 'none';
+      toast('回覆已送出！');
+    } catch(e) { toast('回覆失敗：'+e.message); }
   };
 
-  window.deletePost = async function(postId) {
+  window.delPost = async postId => {
     if (!confirm('確定要刪除這則留言嗎？')) return;
-    try {
-      await deleteDoc(doc(db, 'posts', postId));
-      showToast('已刪除');
-    } catch (e) {
-      showToast('刪除失敗：' + e.message);
-    }
+    try { await deleteDoc(doc(db,'posts',postId)); toast('已刪除'); }
+    catch(e) { toast('刪除失敗：'+e.message); }
   };
 
-  window.deleteReply = async function(postId, replyId) {
+  window.delReply = async (postId, replyId) => {
     if (!confirm('確定要刪除這則回覆嗎？')) return;
-    try {
-      await deleteDoc(doc(db, 'posts', postId, 'replies', replyId));
-      showToast('已刪除');
-    } catch (e) {
-      showToast('刪除失敗：' + e.message);
-    }
+    try { await deleteDoc(doc(db,'posts',postId,'replies',replyId)); toast('已刪除'); }
+    catch(e) { toast('刪除失敗：'+e.message); }
+  };
+
+  window.togglePin = async postId => {
+    const el = document.getElementById('post-'+postId);
+    const on = el?.classList.contains('pinned');
+    try { await updateDoc(doc(db,'posts',postId),{pinned:!on}); toast(on?'已取消置頂':'已置頂！'); }
+    catch(e) { toast('操作失敗：'+e.message); }
+  };
+
+  window.toggleFeat = async postId => {
+    const el = document.getElementById('post-'+postId);
+    const on = el?.classList.contains('featured');
+    try { await updateDoc(doc(db,'posts',postId),{featured:!on}); toast(on?'已取消精選':'已加入精選！'); }
+    catch(e) { toast('操作失敗：'+e.message); }
   };
 </script>
 </body>

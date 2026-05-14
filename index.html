@@ -949,6 +949,33 @@
   @media print {
     .help-drawer-overlay, .help-btn { display: none !important; }
   }
+  /* ── FAQ ── */
+  .faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .faq-item { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+  .faq-q { font-weight: 700; font-size: 15px; padding: 0.9rem 1.1rem; color: var(--ink); cursor: pointer; line-height: 1.5; }
+  .faq-a { font-size: 13.5px; line-height: 1.75; padding: 0 1.1rem 1rem; color: var(--ink-light); }
+  .faq-note { margin-top: 0.6rem; background: var(--blue-light); border-left: 3px solid var(--blue-mid); border-radius: 4px; padding: 0.5rem 0.75rem; font-size: 12.5px; color: var(--ink); }
+
+  /* ── 找誰協助 ── */
+  .contact-section { margin-bottom: 1.5rem; }
+  .contact-section-title { font-size: 15px; font-weight: 700; color: var(--ink); margin: 0 0 0.75rem; }
+  .contact-table-wrap { overflow-x: auto; }
+  .contact-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .contact-table th { background: var(--ink); color: var(--paper); padding: 8px 12px; text-align: left; font-weight: 600; }
+  .contact-table td { padding: 8px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .contact-table tr:last-child td { border-bottom: none; }
+  .contact-table tr:nth-child(even) td { background: var(--paper-darker); }
+  .contact-table a { color: var(--blue); text-decoration: none; }
+  .contact-table a:hover { text-decoration: underline; }
+  .contact-ext-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  @media (max-width: 600px) { .contact-ext-grid { grid-template-columns: 1fr; } }
+  .contact-ext-card { display: flex; align-items: flex-start; gap: 0.9rem; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 1rem; text-decoration: none; color: var(--ink); transition: border-color 0.15s; }
+  .contact-ext-card:hover { border-color: var(--blue-mid); }
+  .contact-ext-icon { font-size: 1.6rem; line-height: 1; margin-top: 2px; }
+  .contact-ext-title { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+  .contact-ext-num { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 2px; }
+  .contact-ext-desc { font-size: 12px; color: var(--ink-muted); line-height: 1.4; }
+
   footer {
     text-align: center;
     padding: 1.5rem;
@@ -977,6 +1004,8 @@
     .tab-bar-sticky { display: none; }
     #tab-rules { display: none !important; }
     #tab-discuss { display: none !important; }
+    #tab-faq { display: none !important; }
+    #tab-contact { display: none !important; }
     #tab-leaves { display: block !important; }
     .changelog-bar { display: none; }
   }
@@ -1274,6 +1303,8 @@
   <div class="tab-bar">
     <button class="tab-btn active" onclick="switchTab('tab-leaves', this)">📋 假別權益</button>
     <button class="tab-btn" onclick="switchTab('tab-rules', this)">⚖️ 請假規定分析</button>
+    <button class="tab-btn" onclick="switchTab('tab-faq', this)">❓ 常見問題</button>
+    <button class="tab-btn" onclick="switchTab('tab-contact', this)">📞 找誰協助</button>
     <button class="tab-btn" onclick="switchTab('tab-discuss', this)">💬 交流討論區</button>
   </div>
 </div>
@@ -2167,6 +2198,224 @@
   </div>
 
 </div><!-- end tab-rules -->
+
+<!-- ══ FAQ 常見問題 Tab ══ -->
+<div id="tab-faq" class="tab-panel">
+  <div style="max-width:800px;margin:0 auto;padding:1.5rem 0;">
+    <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:1.5rem;color:var(--ink);">❓ 常見問題 FAQ</h2>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-q">1. 請假要自己找代課，這是規定嗎？</div>
+        <div class="faq-a">不是。安排代課是辦公室的行政責任，不是你的義務。不管請什麼假，你只需要完成請假手續（告知理由、提供證明），找代課的事交給辦公室就好。
+          <div class="faq-note">📢 依據 2026-05-14 學校公告，代課費已由中心統一辦理，老師無須另行支付代課費予代課教師。</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">2. 辦公室說喪假只有 4 天，真的嗎？</div>
+        <div class="faq-a">不對。父母或配偶過世，法定是 8 天全薪。4 天是錯誤說法，不要接受。祖父母、子女、配偶父母是 6 天，兄弟姊妹是 3 天。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">3. 颱風假不出勤會被記曠職或扣薪嗎？</div>
+        <div class="faq-a">不行。只要你的工作地、居住地、或上班必經路途任一縣市宣布停班，你不出勤就不能被記曠職、不能被扣全勤，也不能被強迫請事假抵充。
+          <div class="faq-note">📢 颱風假後中心若要求補課，書面施壓補課屬違法行為。</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">4. 育嬰留停期間被退出勞健保，正常嗎？</div>
+        <div class="faq-a">不正常，這是違法的。育嬰留停期間你有權繼續參加勞健保，退保會讓你喪失育嬰津貼資格。如果已經被退保，應立即向工會反映，要求補辦並追討損失。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">5. 我有特休嗎？中心從來沒提過。</div>
+        <div class="faq-a">有。只要在中心任職滿 6 個月，就開始有特休。中心沒提不代表你沒有——事實上，中心至今未建立特休制度，這本身就是違法的。你可以主動要求。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">6. 特休沒用完，年底直接消失？</div>
+        <div class="faq-a">不應該。年度結束未休完的特休，雇主必須折算工資發給你，或經你同意後遞延一年（只能遞延一次）。直接消失是違法的。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">7. 離職時特休沒用完怎麼辦？</div>
+        <div class="faq-a">離職時，所有未休完的特休都要折算成工資發給你，雇主不能拒絕。建議向中心確認折算金額的計算方式。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">8. 怎麼算我能追討多少特休折算工資？</div>
+        <div class="faq-a">網站有特休計算器，輸入到職日期和鐘點費，可以直接估算。不過因為華語教師的薪資結構比較浮動（學季制、班型不同等），計算結果僅供參考，實際金額建議向中心或工會確認。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">9. 病假超過 30 天就沒薪水了嗎？</div>
+        <div class="faq-a">未住院的一般病假是一年最多 30 天半薪，超過的部分確實不支薪。但如果是住院，兩年內合計最長可請 1 年，期間半薪照給。這兩種不要混在一起算。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">10. 上下班途中受傷，算公傷嗎？</div>
+        <div class="faq-a">有可能。符合職業災害認定標準的上下班交通意外，可以申請公傷病假，全薪、無天數上限。如果中心叫你請普通病假，要主動確認是否符合公傷條件，差別在於半薪和全薪。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">11. 生理假需要提供證明嗎？</div>
+        <div class="faq-a">不需要。法律明定不得要求提供證明，中心也不能因此扣全勤或影響考績。每月 1 天，半薪。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">12. 申請育嬰留停，中心可以拒絕嗎？</div>
+        <div class="faq-a">不能。育嬰留職停薪是法定權利，子女未滿 3 歲都可以申請，最長 2 年，和年資無關。中心若以「未滿 3 年」或「需委員會審核」為由拒絕，都是違法的。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">13. 產檢假、陪產假，中心有說過嗎？</div>
+        <div class="faq-a">大概沒有。但這兩種假都是法定的：孕婦有 7 天全薪產檢假，配偶有 7 天全薪陪產檢及陪產假。不需要用特休或事假抵充，直接申請就好。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">14. 開學前十天不能請假，這是規定嗎？</div>
+        <div class="faq-a">這是中心自訂的規定，但它不能凌駕於法律之上。病假、喪假、婚假等法定假別，不管在不在「開學前十天」，中心都不能拒絕。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">15. 補課算加班嗎？</div>
+        <div class="faq-a">要看情況。如果補課導致你當天實際工時超過 8 小時，超出的部分依法算加班，中心應給加班費。用「補課」名義要求你無償超時工作是不合法的。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">16. 家庭照顧假和事假有什麼差別？</div>
+        <div class="faq-a">兩種都不支薪，但有一個關鍵差別：家庭照顧假不能扣全勤，一般事假可以扣。家人生病或發生緊急狀況時，優先用家庭照顧假，可以保住你的全勤紀錄。每年 7 天，併入事假 14 天計算。</div>
+      </div>
+
+    </div><!-- end faq-list -->
+  </div>
+</div><!-- end tab-faq -->
+
+<!-- ══ 找誰協助 Tab ══ -->
+<div id="tab-contact" class="tab-panel">
+  <div style="max-width:800px;margin:0 auto;padding:1.5rem 0;">
+    <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:0.5rem;color:var(--ink);">📞 找誰協助</h2>
+    <p style="font-size:13px;color:var(--ink-muted);margin-bottom:1.5rem;line-height:1.6;">遇到問題時，依照性質找對應的單位。中心以外若遇到違法情況，可直接向外部管道申訴。</p>
+
+    <div class="contact-section">
+      <h3 class="contact-section-title">📚 教務組（請假、代課相關）</h3>
+      <div class="contact-table-wrap">
+        <table class="contact-table">
+          <thead>
+            <tr><th>姓名</th><th>分機</th><th>Email</th><th>負責業務</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>吳怡萱</td>
+              <td><a href="tel:+886277495911">3911</a></td>
+              <td><a href="mailto:yswu@ntnu.edu.tw">yswu@ntnu.edu.tw</a></td>
+              <td>教師人事業務、新生報到</td>
+            </tr>
+            <tr>
+              <td>張茜茹</td>
+              <td><a href="tel:+886277495128">5128</a></td>
+              <td><a href="mailto:crchang0809@ntnu.edu.tw">crchang0809@ntnu.edu.tw</a></td>
+              <td>師資及課務安排、代課協調</td>
+            </tr>
+            <tr>
+              <td>張宜君（組長）</td>
+              <td><a href="tel:+886277495178">5178</a></td>
+              <td><a href="mailto:yichunc@ntnu.edu.tw">yichunc@ntnu.edu.tw</a></td>
+              <td>綜理教務組業務</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="contact-section">
+      <h3 class="contact-section-title">💰 總務組（薪資、勞健保相關）</h3>
+      <div class="contact-table-wrap">
+        <table class="contact-table">
+          <thead>
+            <tr><th>姓名</th><th>分機</th><th>Email</th><th>負責業務</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>王鴻益</td>
+              <td><a href="tel:+886277495126">5126</a></td>
+              <td><a href="mailto:m82007@ntnu.edu.tw">m82007@ntnu.edu.tw</a></td>
+              <td>教師鐘點費造冊、勞健保轉入轉出</td>
+            </tr>
+            <tr>
+              <td>王姿君</td>
+              <td><a href="tel:+886277495159">5159</a></td>
+              <td><a href="mailto:w77777@ntnu.edu.tw">w77777@ntnu.edu.tw</a></td>
+              <td>各項費用報銷</td>
+            </tr>
+            <tr>
+              <td>陳俊達（組長）</td>
+              <td><a href="tel:+886277495127">5127</a></td>
+              <td><a href="mailto:chenct@ntnu.edu.tw">chenct@ntnu.edu.tw</a></td>
+              <td>綜理總務組業務</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="contact-section">
+      <h3 class="contact-section-title">🏛️ 主任室</h3>
+      <div class="contact-table-wrap">
+        <table class="contact-table">
+          <thead>
+            <tr><th>姓名</th><th>職稱</th><th>分機</th><th>Email</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>蔡雅薰</td>
+              <td>主任</td>
+              <td><a href="tel:+886277495131">5131</a></td>
+              <td><a href="mailto:mtced@deps.ntnu.edu.tw">mtced@deps.ntnu.edu.tw</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="contact-section contact-external">
+      <h3 class="contact-section-title">🚨 中心以外的管道（遇到違法情況）</h3>
+      <div class="contact-ext-grid">
+        <a class="contact-ext-card" href="tel:1955">
+          <div class="contact-ext-icon">📞</div>
+          <div>
+            <div class="contact-ext-title">勞動部申訴專線</div>
+            <div class="contact-ext-num">1955</div>
+            <div class="contact-ext-desc">免費、匿名，24 小時皆可撥打</div>
+          </div>
+        </a>
+        <a class="contact-ext-card" href="mailto:mtc.teachers.right@gmail.com">
+          <div class="contact-ext-icon">✉️</div>
+          <div>
+            <div class="contact-ext-title">工會（透過促進會聯繫）</div>
+            <div class="contact-ext-num" style="font-size:13px;">mtc.teachers.right@gmail.com</div>
+            <div class="contact-ext-desc">遇到違法或申訴問題，工會協助你走流程</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-section" style="background:var(--paper-darker);border-radius:10px;padding:1rem 1.25rem;">
+      <h3 class="contact-section-title" style="margin-top:0;">🏢 中心辦公室聯絡資訊</h3>
+      <table style="width:100%;font-size:13px;border-collapse:collapse;">
+        <tr><td style="padding:4px 0;color:var(--ink-muted);width:80px;">地址</td><td>106 台北市和平東路 1 段 129 號博愛樓 7 樓</td></tr>
+        <tr><td style="padding:4px 0;color:var(--ink-muted);">辦公時間</td><td>週一至週五 08:30–12:30 / 13:30–17:00</td></tr>
+        <tr><td style="padding:4px 0;color:var(--ink-muted);">總電話</td><td><a href="tel:+886277495130">02-7749-5130</a></td></tr>
+        <tr><td style="padding:4px 0;color:var(--ink-muted);">傳真</td><td>02-2341-8431</td></tr>
+        <tr><td style="padding:4px 0;color:var(--ink-muted);">Email</td><td><a href="mailto:mtc@mtc.ntnu.edu.tw">mtc@mtc.ntnu.edu.tw</a></td></tr>
+      </table>
+    </div>
+
+  </div>
+</div><!-- end tab-contact -->
 
 </main>
 
@@ -3301,7 +3550,18 @@ window.dbToggleFeat = async pid => {
       </button>
     </div>
     <div class="print-modal-body">
-      <p class="print-modal-desc">請選擇要列印或匯出為 PDF 的假別，未勾選的項目將不會出現在列印結果中。</p>
+      <p class="print-modal-desc">請先選擇要列印的頁籤，再選擇假別（僅「假別權益」頁籤支援假別篩選）。</p>
+
+      <div class="print-section-label" style="margin-top:0;">📄 列印哪個頁籤？</div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;"><input type="radio" name="print-tab" value="tab-leaves" checked> 📋 假別權益</label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;"><input type="radio" name="print-tab" value="tab-rules"> ⚖️ 請假規定分析</label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;"><input type="radio" name="print-tab" value="tab-faq"> ❓ 常見問題</label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;"><input type="radio" name="print-tab" value="tab-contact"> 📞 找誰協助</label>
+      </div>
+
+      <div id="print-leaves-section">
+        <div class="print-section-label">🗓️ 篩選假別（僅「假別權益」生效）</div>
 
       <div class="print-select-all-row">
         <button class="print-select-link" onclick="printSelectAll(true)">全選</button>
@@ -3364,6 +3624,7 @@ window.dbToggleFeat = async pid => {
           <div><div class="print-check-item-label">🕯️ 喪假</div><div class="print-check-item-sub">3～8 天・全薪</div></div>
         </label>
       </div>
+    </div><!-- end print-leaves-section -->
     </div>
     <div class="print-modal-actions">
       <button class="print-modal-btn print-modal-btn-primary" onclick="executePrint()">
@@ -3378,8 +3639,25 @@ window.dbToggleFeat = async pid => {
 <script>
 // ── 列印選擇功能 ──
 function openPrintModal() {
+  // 依目前顯示的頁籤預選 radio
+  const activePanel = document.querySelector('.tab-panel.active');
+  const radios = document.querySelectorAll('[name="print-tab"]');
+  radios.forEach(r => {
+    r.checked = activePanel && activePanel.id === r.value;
+  });
+  // 顯示/隱藏假別篩選區
+  updatePrintLeavesSection();
   document.getElementById('print-modal-overlay').classList.add('open');
 }
+function updatePrintLeavesSection() {
+  const selected = document.querySelector('[name="print-tab"]:checked');
+  const leavesSection = document.getElementById('print-leaves-section');
+  if (leavesSection) leavesSection.style.display = (selected && selected.value === 'tab-leaves') ? '' : 'none';
+}
+// 頁籤 radio 切換時更新篩選區顯示
+document.addEventListener('change', function(e) {
+  if (e.target && e.target.name === 'print-tab') updatePrintLeavesSection();
+});
 function closePrintModal() {
   document.getElementById('print-modal-overlay').classList.remove('open');
 }
@@ -3406,30 +3684,43 @@ const PRINT_CARD_MAP = {
 };
 
 function executePrint() {
-  // 收集未勾選項目
-  const unchecked = new Set();
-  document.querySelectorAll('[data-print-card]').forEach(cb => {
-    if (!cb.checked) unchecked.add(cb.dataset.printCard);
-  });
+  const selectedTab = (document.querySelector('[name="print-tab"]:checked') || {}).value || 'tab-leaves';
 
-  // 為不列印的 card 加上 print-hidden class
-  document.querySelectorAll('.leave-card').forEach(card => {
-    let hidden = false;
-    for (const key of unchecked) {
-      if (PRINT_CARD_MAP[key] && PRINT_CARD_MAP[key](card)) {
-        hidden = true;
-        break;
-      }
-    }
-    card.classList.toggle('print-hidden', hidden);
+  // 更新 @media print 顯示哪個頁籤
+  const allTabs = ['tab-leaves', 'tab-rules', 'tab-faq', 'tab-contact'];
+  let styleEl = document.getElementById('print-tab-style');
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'print-tab-style';
+    document.head.appendChild(styleEl);
+  }
+  let css = '@media print {';
+  allTabs.forEach(t => {
+    css += `#${t} { display: ${t === selectedTab ? 'block' : 'none'} !important; }`;
   });
+  css += '#tab-discuss { display: none !important; }';
+  css += '}';
+  styleEl.textContent = css;
+
+  // 假別篩選（只在 tab-leaves 時生效）
+  if (selectedTab === 'tab-leaves') {
+    const unchecked = new Set();
+    document.querySelectorAll('[data-print-card]').forEach(cb => {
+      if (!cb.checked) unchecked.add(cb.dataset.printCard);
+    });
+    document.querySelectorAll('.leave-card').forEach(card => {
+      let hidden = false;
+      for (const key of unchecked) {
+        if (PRINT_CARD_MAP[key] && PRINT_CARD_MAP[key](card)) { hidden = true; break; }
+      }
+      card.classList.toggle('print-hidden', hidden);
+    });
+  }
 
   closePrintModal();
 
-  // 稍微延遲確保 DOM 更新後再列印
   setTimeout(() => {
     window.print();
-    // 列印後移除 print-hidden，恢復正常顯示
     document.querySelectorAll('.leave-card.print-hidden').forEach(c => c.classList.remove('print-hidden'));
   }, 150);
 }

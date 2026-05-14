@@ -834,120 +834,7 @@
   }
   .help-btn:hover { background: #0f5038; }
 
-  .help-drawer-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(26,22,18,0.6);
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-  }
-  .help-drawer-overlay.open { display: flex; }
-  .help-drawer {
-    background: var(--paper);
-    width: 100%;
-    max-width: 480px;
-    border-radius: 16px;
-    overflow: hidden;
-    animation: drawerUp 0.3s ease;
-    margin: 1rem;
-  }
-  @media (max-width: 600px) {
-    .help-drawer-overlay {
-      align-items: flex-end;
-      justify-content: center;
-    }
-    .help-drawer {
-      border-radius: 16px 16px 0 0;
-      margin: 0;
-      max-width: 100%;
-    }
-  }
-  .help-drawer-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid var(--rule);
-    background: var(--green);
-    color: white;
-  }
-  .help-drawer-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 15px;
-    font-weight: 700;
-  }
-  .help-drawer-close {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.7);
-    cursor: pointer;
-    font-size: 22px;
-    line-height: 1;
-    padding: 0 4px;
-    transition: color 0.15s;
-  }
-  .help-drawer-close:hover { color: white; }
-  .help-drawer-body { padding: 1.5rem 1.25rem; }
-
-  .help-option {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.1rem 1.25rem;
-    border: 1px solid var(--rule);
-    border-radius: var(--radius);
-    margin-bottom: 0.85rem;
-    text-decoration: none;
-    color: var(--ink);
-    background: white;
-    transition: box-shadow 0.15s, border-color 0.15s;
-    cursor: pointer;
-  }
-  .help-option:hover {
-    border-color: var(--blue-mid);
-    box-shadow: 0 2px 12px rgba(26,22,18,0.08);
-  }
-  .help-option:last-child { margin-bottom: 0; }
-  .help-option-icon {
-    width: 44px; height: 44px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-  }
-  .icon-gmail { background: #fde8e8; }
-  .icon-form  { background: #e8f0fe; }
-  .help-option-meta { flex: 1; }
-  .help-option-title {
-    font-weight: 500;
-    font-size: 15px;
-    margin-bottom: 2px;
-    color: var(--ink);
-  }
-  .help-option-desc {
-    font-size: 12px;
-    color: var(--ink-muted);
-    line-height: 1.55;
-  }
-  .help-option-arrow {
-    color: var(--ink-muted);
-    align-self: center;
-    flex-shrink: 0;
-  }
-  .help-note {
-    margin-top: 1rem;
-    font-size: 11px;
-    color: var(--ink-muted);
-    line-height: 1.6;
-    padding: 0.75rem 1rem;
-    background: var(--paper-dark);
-    border-radius: var(--radius);
-  }
-
   @media print {
-    .help-drawer-overlay, .help-btn { display: none !important; }
   }
   /* ── FAQ ── */
   .faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
@@ -2400,6 +2287,14 @@
             <div class="contact-ext-desc">遇到違法或申訴問題，工會協助你走流程</div>
           </div>
         </a>
+        <a class="contact-ext-card" href="https://docs.google.com/forms/d/e/1FAIpQLScL59KWWcq6plFaqT2ONcKOCjyK26DibNvUKTtypapl522gMg/viewform" target="_blank" rel="noopener">
+          <div class="contact-ext-icon">📋</div>
+          <div>
+            <div class="contact-ext-title">問題回報表單</div>
+            <div class="contact-ext-num" style="font-size:13px;">Google 表單（可匿名）</div>
+            <div class="contact-ext-desc">不方便寄 Email 也沒關係，我們會定期統整回覆</div>
+          </div>
+        </a>
       </div>
     </div>
 
@@ -3051,55 +2946,8 @@
 <div id="db-toast"></div>
 </div>
 
-<div class="help-drawer-overlay" id="help-drawer-overlay" onclick="closeHelpOnOverlay(event)">
-  <div class="help-drawer">
-    <div class="help-drawer-header">
-      <div class="help-drawer-title">🙋 我需要幫助</div>
-      <button class="help-drawer-close" onclick="closeHelp()">×</button>
-    </div>
-    <div class="help-drawer-body">
-      <p style="font-size:13px;color:var(--ink-muted);margin-bottom:1.1rem;line-height:1.6;">
-        遇到問題或需要協助？以下兩種方式都可以聯繫我們，工會將盡快回覆。
-      </p>
 
-      <!-- Gmail -->
-      <a class="help-option"
-         href="https://mail.google.com/mail/?view=cm&to=mtc.teachers.right@gmail.com&su=【勞權問題】&body=你好，我想反映以下問題：%0A%0A（請描述你遇到的狀況）%0A%0A謝謝。"
-         target="_blank" rel="noopener">
-        <div class="help-option-icon icon-gmail">✉️</div>
-        <div class="help-option-meta">
-          <div class="help-option-title">寫 Email 給我們</div>
-          <div class="help-option-desc">
-            發送至 mtc.teachers.right@gmail.com<br>
-            需登入 Gmail 帳號才能使用
-          </div>
-        </div>
-        <svg class="help-option-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-      </a>
-
-      <!-- Google 表單 -->
-      <a class="help-option"
-         href="https://docs.google.com/forms/d/e/1FAIpQLScL59KWWcq6plFaqT2ONcKOCjyK26DibNvUKTtypapl522gMg/viewform"
-         target="_blank" rel="noopener">
-        <div class="help-option-icon icon-form">📋</div>
-        <div class="help-option-meta">
-          <div class="help-option-title">填寫問題回報表單</div>
-          <div class="help-option-desc">
-            匿名填寫也可以，適合不方便用 Email 的情況<br>
-            我們會定期查看並統整回覆
-          </div>
-        </div>
-        <svg class="help-option-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-      </a>
-
-      <div class="help-note">
-        ⚠️ Email 方式需要你已登入 Google 帳號，點擊後會在新分頁開啟 Gmail 撰寫頁面。若你使用其他信箱，請直接寄至 <strong>mtc.teachers.right@gmail.com</strong>。
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ 特休計算器 Drawer ══ -->
+<!-- ══ 特休計算器<!-- ══ 特休計算器 Drawer ══ -->
 <div class="calc-drawer-overlay" id="calc-drawer-overlay" onclick="closeCalcOnOverlay(event)">
   <div class="calc-drawer">
     <div class="calc-drawer-header">
@@ -3116,18 +2964,13 @@
 </footer>
 
 <script>
-// ── 我需要幫助 Drawer ──
+// ── 我需要幫助 → 切換到「找誰協助」頁籤 ──
 function openHelp() {
-  document.getElementById('help-drawer-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  const btn = document.querySelector('.tab-bar button[onclick*="tab-contact"]');
+  if (btn) switchTab('tab-contact', btn);
+  // 捲動到頁籤區
+  document.querySelector('.tab-bar-sticky').scrollIntoView({ behavior: 'smooth', block: 'start' });
   gtag('event', 'open_help', { event_category: 'engagement' });
-}
-function closeHelp() {
-  document.getElementById('help-drawer-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function closeHelpOnOverlay(e) {
-  if (e.target === e.currentTarget) closeHelp();
 }
 
 // ── 計算器 Drawer ──
@@ -3200,7 +3043,6 @@ function closeOnOverlay(event, id) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     closeCalc();
-    closeHelp();
     document.querySelectorAll('.modal-overlay.open').forEach(m => {
       m.classList.remove('open');
       document.body.style.overflow = '';
@@ -3277,7 +3119,7 @@ window.addEventListener('beforeprint', () => {
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as fbSignOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut as fbSignOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, query, orderBy, limit, serverTimestamp, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig = {
@@ -3310,6 +3152,9 @@ function dbToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), 2500);
 }
+
+// 處理 redirect 登入回來的情況
+getRedirectResult(auth).catch(() => {});
 
 onAuthStateChanged(auth, async user => {
   dbUser = user;
@@ -3477,8 +3322,17 @@ function buildReply(pid,rid,r) {
 }
 
 window.dbSignIn = async () => {
-  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
-  catch(e) { dbToast('登入失敗，請用 Safari 或 Chrome 開啟'); }
+  try {
+    // 先試 popup（桌面較快），失敗再用 redirect（相容 webview）
+    await signInWithPopup(auth, new GoogleAuthProvider());
+  } catch(e) {
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') {
+      try { await signInWithRedirect(auth, new GoogleAuthProvider()); }
+      catch(e2) { dbToast('登入失敗，請用 Safari 或 Chrome 開啟網頁再試'); }
+    } else {
+      dbToast('登入失敗，請用 Safari 或 Chrome 開啟網頁再試');
+    }
+  }
 };
 window.dbSignOut = async () => { await fbSignOut(auth); };
 window.dbSaveNick = () => {

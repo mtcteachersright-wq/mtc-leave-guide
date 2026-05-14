@@ -90,21 +90,15 @@
     <div class="site-title">MTC 教師權益</div>
     <div class="site-subtitle">交流討論區</div>
   </div>
-  <div id="user-bar">
-    <div id="auth-loading" style="font-size:13px;color:var(--muted);">載入中...</div>
-    <div id="auth-logged-out" style="display:none;">
-      <button class="btn-google" onclick="signInWithGoogle()">
-        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        以 Google 帳號登入
-      </button>
-    </div>
+  <div id="user-bar" style="display:none;">
+    <div id="auth-loading"></div>
+    <div id="auth-logged-out" style="display:none;"></div>
     <div id="auth-logged-in" style="display:none; align-items:center; gap:10px;">
       <div class="avatar" id="header-avatar"></div>
       <div>
         <div class="user-name" id="header-name"></div>
         <div class="user-role" id="header-role"></div>
       </div>
-      <button class="btn" onclick="signOut()">登出</button>
     </div>
   </div>
 </header>
@@ -112,12 +106,8 @@
 <main>
   <div id="login-section" style="display:none;">
     <div class="login-icon">💬</div>
-    <div class="login-title">歡迎加入討論</div>
-    <div class="login-desc">請以 Google 帳號登入後留言。<br>您的 Email 不會公開顯示，僅供管理者聯繫使用。</div>
-    <button class="btn-google" onclick="signInWithGoogle()">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      以 Google 帳號登入
-    </button>
+    <div class="login-title">請先登入</div>
+    <div class="login-desc">請使用上方的「以 Google 帳號登入」按鈕登入後即可留言。</div>
   </div>
 
   <div id="board-section" style="display:none;">
@@ -156,7 +146,6 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut as fbSignOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
   import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, query, orderBy, serverTimestamp, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const firebaseConfig = {
@@ -170,10 +159,7 @@
 
   const ADMIN_EMAIL = 'mtc.teachers.right@gmail.com';
   const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
   const db = getFirestore(app);
-
-  getRedirectResult(auth).catch(() => {});
 
   let currentUser = null;
   let unsubPosts = null;
@@ -192,16 +178,43 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  window.signInWithGoogle = async () => {
-    try { await signInWithRedirect(auth, new GoogleAuthProvider()); }
-    catch { toast('登入失敗，請再試一次'); }
-  };
+  function applyAuthState(user) {
+    document.getElementById('auth-loading').style.display = 'none';
+    currentUser = user;
+    if (user) {
+      const nick = getNick(user.uid)||(isAdmin(user)?'管理者':'');
+      document.getElementById('auth-logged-in').style.display = 'flex';
+      document.getElementById('auth-logged-out').style.display = 'none';
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('board-section').style.display = 'block';
+      document.getElementById('header-name').textContent = nick||user.displayName||'';
+      document.getElementById('header-role').textContent = isAdmin(user)?'管理者':'一般使用者';
+      document.getElementById('compose-nick-display').textContent = nick||user.displayName||'';
+      const av = document.getElementById('header-avatar');
+      if (user.photoURL) av.innerHTML = `<img src="${user.photoURL}" alt="">`;
+      else av.textContent = initials(nick||user.displayName||'');
+      if (!nick && !isAdmin(user)) {
+        setTimeout(() => {
+          document.getElementById('nickname-input').value = user.displayName||'';
+          document.getElementById('nickname-modal').classList.add('show');
+        }, 500);
+      }
+      if (!unsubPosts) loadPosts();
+    } else {
+      if (unsubPosts) { unsubPosts(); unsubPosts = null; }
+      Object.values(replyUnsubs).forEach(u => u());
+      document.getElementById('auth-logged-in').style.display = 'none';
+      document.getElementById('auth-logged-out').style.display = 'flex';
+      document.getElementById('login-section').style.display = 'block';
+      document.getElementById('board-section').style.display = 'none';
+    }
+  }
 
-  window.signOut = async () => {
-    if (unsubPosts) unsubPosts();
-    Object.values(replyUnsubs).forEach(u => u());
-    await fbSignOut(auth);
-  };
+  window.addEventListener('message', e => {
+    if (e.data?.type === 'AUTH_STATE') {
+      applyAuthState(e.data.uid ? e.data : null);
+    }
+  });
 
   window.saveNickname = () => {
     const v = document.getElementById('nickname-input').value.trim();
@@ -211,36 +224,6 @@
     document.getElementById('compose-nick-display').textContent = v;
     toast('暱稱設定完成！');
   };
-
-  onAuthStateChanged(auth, user => {
-    document.getElementById('auth-loading').style.display = 'none';
-    currentUser = user;
-    if (user) {
-      const nick = getNick(user.uid)||(isAdmin(user)?'管理者':'');
-      document.getElementById('auth-logged-in').style.display = 'flex';
-      document.getElementById('auth-logged-out').style.display = 'none';
-      document.getElementById('login-section').style.display = 'none';
-      document.getElementById('board-section').style.display = 'block';
-      const av = document.getElementById('header-avatar');
-      if (user.photoURL) av.innerHTML = `<img src="${user.photoURL}" alt="">`;
-      else av.textContent = initials(nick||user.displayName||'');
-      document.getElementById('header-name').textContent = nick||user.displayName||'';
-      document.getElementById('header-role').textContent = isAdmin(user)?'管理者':'一般使用者';
-      document.getElementById('compose-nick-display').textContent = nick||user.displayName||'';
-      if (!nick && !isAdmin(user)) {
-        setTimeout(() => {
-          document.getElementById('nickname-input').value = user.displayName||'';
-          document.getElementById('nickname-modal').classList.add('show');
-        }, 500);
-      }
-      loadPosts();
-    } else {
-      document.getElementById('auth-logged-in').style.display = 'none';
-      document.getElementById('auth-logged-out').style.display = 'flex';
-      document.getElementById('login-section').style.display = 'block';
-      document.getElementById('board-section').style.display = 'none';
-    }
-  });
 
   function loadPosts() {
     if (unsubPosts) unsubPosts();

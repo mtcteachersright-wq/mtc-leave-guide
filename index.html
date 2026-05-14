@@ -3192,7 +3192,7 @@ import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, query, ord
 
 const firebaseConfig = {
   apiKey: "AIzaSyBk3On7USSfw-MrQtv1CIA_IplDL19LBBU",
-  authDomain: "mtcteachersright-wq.github.io",
+  authDomain: "mtctechers-rights.firebaseapp.com",
   projectId: "mtctechers-rights",
   storageBucket: "mtctechers-rights.firebasestorage.app",
   messagingSenderId: "206354495513",
@@ -3395,7 +3395,14 @@ window.dbSignIn = async () => {
   try {
     await signInWithRedirect(auth, provider);
   } catch(e) {
-    dbToast('登入失敗，請直接用 Chrome 開啟網站後再試（錯誤：' + (e.code||e.message) + '）');
+    const code = e.code || '';
+    let msg = '登入失敗，請稍後再試。';
+    if (code === 'auth/api-key-expired') {
+      msg = '系統維護中，登入功能暫時無法使用，請稍後再試。';
+    } else if (code.includes('popup') || code.includes('redirect')) {
+      msg = '請直接用 Chrome 或 Safari 開啟網頁後再試。';
+    }
+    dbToast(msg);
   }
 };
 window.dbSignOut = async () => { await fbSignOut(auth); };

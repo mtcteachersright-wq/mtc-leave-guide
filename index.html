@@ -1037,6 +1037,7 @@
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('tab-leaves', this)">📋 假別權益</button>
   <button class="tab-btn" onclick="switchTab('tab-rules', this)">⚖️ 請假規定分析</button>
+  <button class="tab-btn" onclick="switchTab('tab-discuss', this)">💬 交流討論區</button>
 </div>
 
 <!-- ── 假別權益 Tab ── -->
@@ -1658,8 +1659,6 @@
       <div class="section">
         <div class="section-label label-fail">❌ 中心現狀（失效）</div>
         <ul>
-          <li><span class="warn">颱風停課仍可能扣發全勤獎金</span>，違反要點規定</li>
-          <li>有要求教師以<span class="warn">特休或事假抵充颱風假</span>的疑慮</li>
           <li>颱風天授課中斷後，<span class="warn">發信要求老師通知學生調課或補課</span>，將補行工作的責任轉嫁給教師</li>
           <li>颱風假後三日內要求提供課程進度表，<span class="warn">間接施壓補課</span></li>
         </ul>
@@ -2405,6 +2404,16 @@
     </div>
   </div>
 </div>
+<!-- ── 討論區 Tab ── -->
+<div id="tab-discuss" class="tab-panel">
+  <iframe
+    src="留言板.html"
+    style="width:100%;border:none;min-height:80vh;display:block;"
+    title="交流討論區"
+    id="discuss-iframe"
+  ></iframe>
+</div>
+
 <div class="help-drawer-overlay" id="help-drawer-overlay" onclick="closeHelpOnOverlay(event)">
   <div class="help-drawer">
     <div class="help-drawer-header">

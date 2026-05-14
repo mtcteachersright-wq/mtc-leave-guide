@@ -286,6 +286,15 @@
     align-items: center;
     flex-wrap: wrap;
   }
+  .controls-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
   .search-wrap {
     flex: 1;
     min-width: 180px;
@@ -356,9 +365,12 @@
 
   /* ── Main layout ── */
   main {
-    max-width: 1100px;
+    max-width: 860px;
     margin: 0 auto;
     padding: 2rem 1.5rem 4rem;
+  }
+  @media (max-width: 600px) {
+    main { padding: 1.25rem 1rem 3rem; }
   }
 
   .no-results {
@@ -987,6 +999,14 @@
         <li>新增交流討論區（留言板）</li>
       </ul>
     </div>
+    <div class="changelog-section">
+      <div class="changelog-section-title">🛠️ 介面改善</div>
+      <ul>
+        <li>電腦版頁面內容置中，左右留白，改善閱讀體驗</li>
+        <li>重新整理後自動停留在目前頁籤，不再跳回首頁</li>
+        <li>留言刪除後顯示「已刪除」佔位，保留討論脈絡</li>
+      </ul>
+    </div>
     <div class="changelog-date" style="margin-top:1.5rem;">v1.1 · 2026-05-13</div>
     <div class="changelog-section">
       <div class="changelog-section-title">🔧 假別手冊修正</div>
@@ -1016,6 +1036,7 @@
 </div>
 
 <div class="controls">
+  <div class="controls-inner">
   <div class="search-wrap">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input id="search" type="search" placeholder="搜尋假別、關鍵字…" autocomplete="off">
@@ -1042,6 +1063,7 @@
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     我需要幫助
   </button>
+  </div>
 </div>
 
 <main>
@@ -2655,8 +2677,19 @@ function switchTab(tabId, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
   btn.classList.add('active');
+  location.hash = tabId;
   gtag('event', 'switch_tab', { event_category: 'navigation', event_label: tabId });
 }
+
+// 頁面載入時恢復頁籤
+(function() {
+  const hash = location.hash.replace('#', '');
+  const validTabs = ['tab-leaves', 'tab-rules', 'tab-discuss'];
+  if (hash && validTabs.includes(hash)) {
+    const btn = document.querySelector(`[onclick*="${hash}"]`);
+    if (btn) switchTab(hash, btn);
+  }
+})();
 
 function toggle(header) {
   const card = header.closest('.leave-card');
@@ -2891,6 +2924,12 @@ function upsertPost(container, pid, p, isFeat) {
   const nick=p.nick||'匿名', adm=p.isAdmin;
   const canDel = dbUser&&(isAdmin(dbUser)||dbUser.uid===p.uid);
   const rp = isFeat?'f':'m';
+
+  if (p.deleted) {
+    el.innerHTML = `<div style="font-size:13px;color:var(--ink-muted);font-style:italic;padding:0.25rem 0;">⚠️ 此留言已刪除</div>
+      <div class="db-replies" id="${rp}rep${pid}"></div>`;
+    return;
+  }
   el.innerHTML = `
     <div class="db-post-header">
       <div class="db-avatar" style="background:${adm?'#eef4ee':'#f5ede6'};color:${adm?'#2d5a2d':'#8b4513'};">${inits(nick)}</div>
@@ -2934,6 +2973,10 @@ function subscribeReplies(pid) {
 
 function buildReply(pid,rid,r) {
   const div=document.createElement('div'); div.className='db-reply';
+  if (r.deleted) {
+    div.innerHTML=`<div style="font-size:12px;color:var(--ink-muted);font-style:italic;">⚠️ 此回覆已刪除</div>`;
+    return div;
+  }
   const n=r.nick||'匿名';
   div.innerHTML=`
     <div class="db-reply-header">
@@ -2989,12 +3032,14 @@ window.dbSubmitReply = async (pid,rp) => {
   } catch(e){dbToast('回覆失敗：'+e.message);}
 };
 window.dbDelPost = async pid => {
-  if(!confirm('確定刪除？')) return;
-  try{await deleteDoc(doc(db,'posts',pid));dbToast('已刪除');}catch(e){dbToast('刪除失敗');}
+  if(!confirm('確定刪除？此留言將顯示為「已刪除」。')) return;
+  try { await updateDoc(doc(db,'posts',pid),{deleted:true,body:'',nick:''}); dbToast('已刪除'); }
+  catch(e){ dbToast('刪除失敗'); }
 };
 window.dbDelReply = async (pid,rid) => {
-  if(!confirm('確定刪除？')) return;
-  try{await deleteDoc(doc(db,'posts',pid,'replies',rid));dbToast('已刪除');}catch(e){dbToast('刪除失敗');}
+  if(!confirm('確定刪除？此回覆將顯示為「已刪除」。')) return;
+  try { await updateDoc(doc(db,'posts',pid,'replies',rid),{deleted:true,body:'',nick:''}); dbToast('已刪除'); }
+  catch(e){ dbToast('刪除失敗'); }
 };
 window.dbTogglePin = async pid => {
   const on=document.getElementById('m'+pid)?.classList.contains('pinned');

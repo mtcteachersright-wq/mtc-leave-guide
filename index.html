@@ -1124,33 +1124,16 @@
 <!-- ── 版本更新帶 ── -->
 <div class="changelog-bar" id="changelog-bar">
   <div class="changelog-trigger" onclick="toggleChangelog()">
-    <span class="changelog-version">v1.3</span>
+    <span class="changelog-version">v1.3.1</span>
     <span class="changelog-label">2026年5月15日更新</span>
     <span class="changelog-arrow">▼</span>
   </div>
   <div class="changelog-body">
-    <div class="changelog-date">v1.3 · 2026-05-15</div>
+    <div class="changelog-date">v1.3.1 · 2026-05-15</div>
     <div class="changelog-section">
-      <div class="changelog-section-title">✨ 新增頁面</div>
+      <div class="changelog-section-title">🐛 修正</div>
       <ul>
-        <li>新增「常見問題 FAQ」頁籤：16 題口語化解說，點題目展開答案</li>
-        <li>新增「找誰協助」頁籤：教務組、總務組、主任室聯絡資訊，以及勞動部申訴專線、工會、勞權事件匿名回報表單</li>
-      </ul>
-    </div>
-    <div class="changelog-section">
-      <div class="changelog-section-title">🖨️ 列印功能</div>
-      <ul>
-        <li>列印選擇面板：點列印後可選擇要印的頁籤，「假別權益」頁籤可進一步勾選個別假別</li>
-        <li>支援全選／全部取消快速切換</li>
-      </ul>
-    </div>
-    <div class="changelog-section">
-      <div class="changelog-section-title">🛠️ 介面改善</div>
-      <ul>
-        <li>「我需要幫助」按鈕改為直接跳到「找誰協助」頁籤，不再彈出小視窗</li>
-        <li>手機版工具列改為搜尋與篩選各一排，避免文字被截斷</li>
-        <li>手機版「請假規定分析」表格改為卡片堆疊排列，四欄內容完整顯示</li>
-        <li>修正安全性問題，提升穩定性</li>
+        <li>若干穩定性修正</li>
       </ul>
     </div>
 
@@ -1161,6 +1144,31 @@
         ▼ 查看舊版紀錄
       </button>
       <div style="display:none; margin-top:1rem;">
+        <div class="changelog-date">v1.3 · 2026-05-15</div>
+        <div class="changelog-section">
+          <div class="changelog-section-title">✨ 新增頁面</div>
+          <ul>
+            <li>新增「常見問題 FAQ」頁籤：16 題口語化解說，點題目展開答案</li>
+            <li>新增「找誰協助」頁籤：教務組、總務組、主任室聯絡資訊，以及勞動部申訴專線、工會、勞權事件匿名回報表單</li>
+          </ul>
+        </div>
+        <div class="changelog-section">
+          <div class="changelog-section-title">🖨️ 列印功能</div>
+          <ul>
+            <li>列印選擇面板：點列印後可選擇要印的頁籤，「假別權益」頁籤可進一步勾選個別假別</li>
+            <li>支援全選／全部取消快速切換</li>
+          </ul>
+        </div>
+        <div class="changelog-section">
+          <div class="changelog-section-title">🛠️ 介面改善</div>
+          <ul>
+            <li>「我需要幫助」按鈕改為直接跳到「找誰協助」頁籤，不再彈出小視窗</li>
+            <li>手機版工具列改為搜尋與篩選各一排，避免文字被截斷</li>
+            <li>手機版「請假規定分析」表格改為卡片堆疊排列，四欄內容完整顯示</li>
+            <li>修正安全性問題，提升穩定性</li>
+          </ul>
+        </div>
+        <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid #3d3428;">
         <div class="changelog-date">v1.2 · 2026-05-14</div>
         <div class="changelog-section">
           <div class="changelog-section-title">🔧 假別手冊修正</div>
@@ -3013,7 +3021,7 @@
 </div>
 
 
-<!-- ══ 特休計算器<!-- ══ 特休計算器 Drawer ══ -->
+<!-- ══ 特休計算器 Drawer ══ -->
 <div class="calc-drawer-overlay" id="calc-drawer-overlay" onclick="closeCalcOnOverlay(event)">
   <div class="calc-drawer">
     <div class="calc-drawer-header">
@@ -3063,16 +3071,22 @@ function switchTab(tabId, btn) {
   document.getElementById(tabId).classList.add('active');
   btn.classList.add('active');
   location.hash = tabId;
+  try { sessionStorage.setItem('activeTab', tabId); } catch(e) {}
   gtag('event', 'switch_tab', { event_category: 'navigation', event_label: tabId });
 }
 
-// 頁面載入時恢復頁籤
+// 頁面載入時恢復頁籤（優先 sessionStorage，其次 hash）
 (function() {
-  const hash = location.hash.replace('#', '');
-  const validTabs = ['tab-leaves', 'tab-rules', 'tab-discuss'];
-  if (hash && validTabs.includes(hash)) {
-    const btn = document.querySelector(`.tab-bar button[onclick*="${hash}"]`);
-    if (btn) switchTab(hash, btn);
+  const validTabs = ['tab-leaves', 'tab-rules', 'tab-faq', 'tab-contact', 'tab-discuss'];
+  let tabId = null;
+  try { tabId = sessionStorage.getItem('activeTab'); } catch(e) {}
+  if (!tabId || !validTabs.includes(tabId)) {
+    const hash = location.hash.replace('#', '');
+    if (hash && validTabs.includes(hash)) tabId = hash;
+  }
+  if (tabId && tabId !== 'tab-leaves') {
+    const btn = document.querySelector(`.tab-bar button[onclick*="${tabId}"]`);
+    if (btn) switchTab(tabId, btn);
   }
 })();
 
